@@ -8,20 +8,26 @@ require('conexao.php');
     array('Jul', 10, 8, 4), array('Ago', 15, 9, 4), array('Set', 20, 5, 12),
     array('Out', 28, 4, 14), array('Nov', 16, 7, 14), array('Dez', 24, 3, 15),
     );*/
-
-$data = array();
-
-foreach(mysqli_fetch_array($result) as $linha)
+$lista = array();
+while($row = mysqli_fetch_array($result))
 {
-    $data[] = array($linha['date_event'],intval($linha['value']));
-}
+    if(isset($row['value']) && ($row['event_type'] == "PIX"))
+    {
+        $data_pix[] = array(explode("T",$row['date_event'])[0],$row['value']);
+    }
+    elseif(isset($row['value']) && $row['event_type'] == "TED")
+    {
+        $data_ted[] = array(explode("T",$row['date_event'])[0],$row['value']);
+    };
 
+}; 
+$data[] = array($data_pix,$data_ted);
 $plot = new PHPlot();
 $plot -> SetImageBorderType('plain');
 $plot -> SetPlotType('bars');
 $plot -> SetDataType('text-data');
-$plot -> SetDataValues($data);
-$plot -> SetTitle("teste Topaz");
+$plot -> SetDataValues($data_pix);
+$plot -> SetTitle("Topaz");
 /*while($row = mysqli_fetch_array($result))
 {
     if(isset($row['value']) && $row['id_event'] > 0)
@@ -31,11 +37,9 @@ $plot -> SetTitle("teste Topaz");
     else
     {
         $plot -> SetDataValues(array($row['date_event'],0));
-    }
-    
-    
+    } 
 }*/
-$plot -> SetLegend(array('Edudantes','Colunistas','Desenvolvedores'));
+$plot -> SetLegend(array('PIX','TED'));
 $plot -> SetXTickLabelPos('none');
 $plot -> SetXTickPos('none');
 $plot -> DrawGraph();

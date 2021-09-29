@@ -4,7 +4,7 @@ require('conexao.php');
 
 <html>
 	<head>
-	<title>Exemplo</title>
+	<title>Desafio Topaz - Analista de Segurança</title>
 	<!-- CSS only -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 <!-- JavaScript Bundle with Popper -->
@@ -12,10 +12,6 @@ require('conexao.php');
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
 </head>
 <body>
-
-
-
-
 <div class="table-bordered table-responsive">
 	<table class="table table-light table-hover">
 	<thead>
@@ -59,8 +55,12 @@ require('conexao.php');
 				}else{
 					?> <td><?=$row['value']?></td> <?php
 				}
-				$latitude = $row['latitude'];
-				$longitude = $row['longitude'];
+				$latitude = str_replace(".","",$row['latitude']);
+				$longitude = str_replace(".","",$row['longitude']);
+				$tamanho = strlen($latitude);
+				$latitude = substr($latitude,0,3) . "." .substr($latitude,4,intval($tamanho));
+				$tamanho = strlen($longitude);
+				$longitude = substr($longitude,0,3) . "." .substr($longitude,4,intval($tamanho));				
 				$local = "https://www.google.com/maps/search/?api=1&query=".$latitude.",".$longitude;
 ?>
 				
@@ -68,11 +68,11 @@ require('conexao.php');
 <?php
 				if($row['event_type'] == "PIX")
 				{?>
-					<th><a href=<?=$local?>><?=$row['device_id']?></a></th>
+					<th><a href=<?=$local?> target="_blank"><?=$row['device_id']?></a></th>
 				<?php
 				}else{
 					?>
-					<td><a href=<?=$local?>><?=$row['device_id']?></a></td>
+					<td><a href=<?=$local?> target="_blank"><?=$row['device_id']?></a></td>
 					<?php
 				}?>
 			<!-----	<td>"><?=$row['latitude']?></td>
@@ -108,8 +108,3 @@ require('conexao.php');
 	
 </body>
 </html>
-<?php
-
-// tira o resultado da busca da memória
-//mysqli_free_result($dados);
-?>

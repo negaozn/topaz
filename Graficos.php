@@ -1,6 +1,7 @@
 <?php
 require('phplot/phplot.php');
 #require('conexao.php');
+
 $host = "localhost";
 $db   = "topaz";
 $user = "root";

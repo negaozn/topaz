@@ -8,11 +8,13 @@ try{
     $pass = "";
 
     $conn = mysqli_connect($host,$user,$pass,$db);
-    $query = "SELECT * FROM topaz.desafio_tpz";
+    $query = "SELECT * FROM desafio_tpz";
     $result = mysqli_query($conn,$query);
     $row = mysqli_fetch_array($result,MYSQLI_NUM);
+    echo ("Conexao OK");
 }
 catch(Exception $e){
     echo "Erro no Banco: ",$e->getMessage(), "\n";
 }
 ?>
+
